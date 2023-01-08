@@ -1,58 +1,48 @@
-class Department{
-    //private name: string; // public = default
-    private employees: string[] = [];
-
-    // constructor = reserve key word
-    constructor(private readonly id: string, public name: string){
-        // this.name = n;
-    }
-    describe(this: Department){
-        console.log(`Department (${this.id}): ${this.name}`);
-    }
-
-    addEmployee(employee: string){
-        this.employees.push(employee);
-    }
-
-    printEmployeeInformation(){
-        console.log(this.employees.length);
-        console.log(this.employees);
-    }
+// interfaces
+// if you want to work objects use interfaces otherwise type also works fine
+//type AddFn = (a: number, b: number) => number;
+interface AddFn {
+    (a: number, b: number): number;
 }
 
-
-// inheritance
-class ITDepartment extends Department{
-    constructor(id: string, public admins: string[]){
-        super(id, 'IT');
-    }
+let add: AddFn;
+add = (n1: number, n2: number) => {
+    return n1 + n2;
 }
 
-class AccountingDepartment extends Department{
-    constructor(id: string, private reports: string[]){
-        super(id, 'Accounting');
-    }
-
-    addReport(text: string){
-        this.reports.push(text);
-    }
-
-    printReports(){
-        console.log(this.reports);
-    }
+interface Named {
+    readonly name?: string // readonly interface property
+    outputName?: string // optional interface property
 }
 
-const it = new ITDepartment('d1', ['Max']);
+interface Greetable extends Named {
 
-it.addEmployee('Max');
-it.addEmployee('Manu');
-it.describe();
-it.printEmployeeInformation();
+    greet(phrase: string): void;
+}
 
-console.log(it);
+// using interface with class
+class Person implements Greetable {
+    name?: string;
+    age = 30;
 
-const accounting = new AccountingDepartment('d2', []);
-console.log(accounting);
+    constructor(n?: string) {
+        if (n) {
+            this.name = n;
+        }
+    }
 
-// const itCopy = { name: 'DUMMY', describe: it.describe };
-// itCopy.describe();
+    greet(phrase: string) {
+        if (this.name) {
+        console.log(phrase + ' ' + this.name);
+        } else {
+        console.log('Hi!');
+        }
+    }
+
+}
+
+let user1: Greetable;
+user1 = new Person();
+
+user1.greet('Hi there - I am');
+console.log(user1);
